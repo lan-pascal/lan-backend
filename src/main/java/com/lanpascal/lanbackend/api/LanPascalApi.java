@@ -1,5 +1,7 @@
 package com.lanpascal.lanbackend.api;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
@@ -16,15 +18,17 @@ import com.lanpascal.lanbackend.repository.UserRepository;
 public class LanPascalApi extends HttpServlet {
 
 	@Autowired
-	UserRepository repository;
+	private UserRepository userRepository;
 
-    @RequestMapping("/")
-    @ResponseBody
-    String test() {
-
-		repository.save(new User("allo"));
-
-        return "Hello, World!";
-    }
+	@RequestMapping("/findAll")
+	@ResponseBody
+	String findAll() {
+		List<User> userList = userRepository.findAll();
+		StringBuilder userStrings = new StringBuilder();
+		for (User user : userList) {
+			userStrings.append(user.toString()).append("\n");
+		}
+		return userStrings.toString();
+	}
 
 }
